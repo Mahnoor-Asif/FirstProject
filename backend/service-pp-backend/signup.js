@@ -20,7 +20,12 @@ router.post('/signup', upload.fields([
   { name: 'criminalClearance', maxCount: 1 }
 ]), async (req, res) => {
   try {
-    const { name, email, contactNumber, cnicNumber } = req.body;
+    const { name, email, contactNumber, cnicNumber, password } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !contactNumber || !cnicNumber || !password) {
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
 
     // Check if account already exists
     const existing = await Provider.findOne({ email });
@@ -34,6 +39,7 @@ router.post('/signup', upload.fields([
       email,
       contactNumber,
       cnicNumber,
+      password,
       profilePhoto: req.files.profilePhoto ? req.files.profilePhoto[0].path : '',
       cnicFront: req.files.cnicFront ? req.files.cnicFront[0].path : '',
       cnicBack: req.files.cnicBack ? req.files.cnicBack[0].path : '',
@@ -41,10 +47,15 @@ router.post('/signup', upload.fields([
     });
 
     await newProvider.save();
-    res.json({ success: true });
+    res.json({ 
+      success: true, 
+      message: 'Provider registered successfully',
+      providerId: newProvider._id,
+      email: newProvider.email
+    });
   } catch(err) {
     console.error('Signup error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Server error: ' + err.message });
   }
 });
 

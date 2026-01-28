@@ -4,6 +4,7 @@ const servers = [
   "common-logic/server.js",
   "service-seeker/server.js",
   "service-provider-backend/server.js",
+  "service-pp-backend/server.js",
   "service-shops-backend/server.js",
   "admin-backend/apps/admin-backend/server.js"
 ];

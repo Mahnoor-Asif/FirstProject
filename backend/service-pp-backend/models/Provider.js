@@ -5,11 +5,19 @@ const providerSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   contactNumber: { type: String, required: true },
   cnicNumber: { type: String, required: true },
-  profilePhoto: { type: String, required: true },
-  cnicFront: { type: String, required: true },
-  cnicBack: { type: String, required: true },
-  criminalClearance: { type: String }
-});
+  password: { type: String, required: true },
+  profilePhoto: { type: String, default: '' },
+  cnicFront: { type: String, default: '' },
+  cnicBack: { type: String, default: '' },
+  criminalClearance: { type: String, default: '' },
+  skills: { type: Object, default: {} },
+  certifications: { type: Array, default: [] },
+  location: { type: String, default: '' },
+  isComplete: { type: Boolean, default: false },
+  // OTP Fields
+  otp: { type: String, default: undefined },
+  otpExpiry: { type: Date, default: undefined },
+  otpVerified: { type: Boolean, default: false }
+}, { timestamps: true });
 
-const Provider = mongoose.model('Provider', providerSchema);
-export default Provider;
+export default mongoose.model('Provider', providerSchema);
